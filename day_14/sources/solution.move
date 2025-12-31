@@ -4,9 +4,7 @@
 /// Students should complete main.move, not this file.
 
 module challenge::day_14_solution {
-    use std::vector;
     use std::string::String;
-    use std::option::{Self, Option};
 
     #[test_only]
     use std::unit_test::assert_eq;
