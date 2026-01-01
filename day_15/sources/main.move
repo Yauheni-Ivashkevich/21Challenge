@@ -1,46 +1,82 @@
 /// DAY 15: Read Object Model & Create FarmState Struct (no UID yet)
 /// 
-/// Today you will:
-/// 1. Learn about Sui objects (conceptually)
-/// 2. Create a simple struct for farm counters
-/// 3. Write basic functions to increment counters
-/// 
-/// NOTE: Today we're NOT creating a Sui object yet, just a regular struct.
-/// We'll add UID and make it an object tomorrow.
+/// Today (Done in main.move):
+/// 1. Learnt about Sui objects (conceptually)
+/// 2. Created a simple struct for farm counters
+/// 3. Wrote basic functions to increment counters
+
 
 module challenge::day_15 {
     // TODO: Define constants for plotId validation
-    // const MAX_PLOTS: u64 = 20;
-    // const E_PLOT_NOT_FOUND: u64 = 1;
-    // const E_PLOT_LIMIT_EXCEEDED: u64 = 2;
-    // const E_INVALID_PLOT_ID: u64 = 3;
-    // const E_PLOT_ALREADY_EXISTS: u64 = 4;
+    const MAX_PLOTS: u64 = 20;
+    const E_PLOT_NOT_FOUND: u64 = 1;
+    const E_PLOT_LIMIT_EXCEEDED: u64 = 2;
+    const E_INVALID_PLOT_ID: u64 = 3;
+    const E_PLOT_ALREADY_EXISTS: u64 = 4;
 
     // TODO: Define a struct called 'FarmCounters' with:
-    // - planted: u64
-    // - harvested: u64
-    // - plots: vector<u8>
+    // - planted: u64 // - harvested: u64 // - plots: vector<u8>
     // Add 'copy', 'drop', and 'store' abilities
     // (store is needed because we'll put this in an object later)
-    // public struct FarmCounters has copy, drop, store {
-    //     // Your fields here
-    // }
+    public struct FarmCounters has copy, drop, store {
+        planted: u64,
+        harvested: u64,
+        plots: vector<u8>,
+    }
+
 
     // TODO: Write a constructor 'new_counters' that returns counters with zeros
-    // fun new_counters(): FarmCounters {
-    //     // Your code here (include plots: vector::empty())
-    // }
+    fun new_counters(): FarmCounters {
+        FarmCounters {
+            planted: 0,
+            harvested: 0,
+            plots: vector::empty(),
+        }
+    }
+
 
     // TODO: Write a function 'plant' that takes plotId: u8 and increments planted counter
-    // fun plant(counters: &mut FarmCounters, plotId: u8) {
-    //     // Your code here
-    //     // Validate plotId, check limits, prevent duplicates
-    // }
+    fun plant(counters: &mut FarmCounters, plotId: u8) {
+        // Check if plotId is valid (between 1 and 20)
+        assert!(plotId >= 1 && plotId <= (MAX_PLOTS as u8), E_INVALID_PLOT_ID);
+        
+        // Check if we've reached the plot limit
+        let len = vector::length(&counters.plots);
+        assert!(len < MAX_PLOTS, E_PLOT_LIMIT_EXCEEDED);
+        
+        // Check if plot already exists in the vector
+        let mut i = 0;
+        while (i < len) {
+            let existing_plot = vector::borrow(&counters.plots, i);
+            assert!(*existing_plot != plotId, E_PLOT_ALREADY_EXISTS);
+            i = i + 1;
+        };
+        
+        counters.planted = counters.planted + 1;
+        vector::push_back(&mut counters.plots, plotId);
+    }
 
     // TODO: Write a function 'harvest' that takes plotId: u8 and increments harvested counter
-    // fun harvest(counters: &mut FarmCounters, plotId: u8) {
-    //     // Your code here
-    //     // Find and remove the plot from the vector
-    // }
+    fun harvest(counters: &mut FarmCounters, plotId: u8) {
+        let len = vector::length(&counters.plots);
+                
+        // Check if plot exists in the vector and find its index
+        let mut i = 0;
+        let mut found_index = len; 
+        while (i < len) {
+            let existing_plot = vector::borrow(&counters.plots, i);
+            if (*existing_plot == plotId) {
+                found_index = i;
+            };
+            i = i + 1;
+        };
+        
+        // Assert that plot was found (found_index < len means we found it)
+        assert!(found_index < len, E_PLOT_NOT_FOUND);
+        
+        // Remove the plot from the vector
+        vector::remove(&mut counters.plots, found_index);
+        counters.harvested = counters.harvested + 1;
+    }
 }
 
