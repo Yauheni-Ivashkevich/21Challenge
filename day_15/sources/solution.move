@@ -2,6 +2,7 @@
 /// 
 /// This is the solution file for day 15.
 /// Students should complete main.move, not this file.
+#[allow(unused_function)]
 
 module challenge::day_15_solution {
     // Simple counter struct (not a Sui object yet)

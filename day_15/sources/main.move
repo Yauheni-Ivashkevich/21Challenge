@@ -4,7 +4,7 @@
 /// 1. Learnt about Sui objects (conceptually)
 /// 2. Created a simple struct for farm counters
 /// 3. Wrote basic functions to increment counters
-
+#[allow(unused_function)]
 
 module challenge::day_15 {
     // TODO: Define constants for plotId validation
