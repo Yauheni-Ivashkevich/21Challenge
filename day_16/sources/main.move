@@ -1,12 +1,10 @@
 /// DAY 16: Introduce Object with UID & key
 /// 
-/// Today you will:
-/// 1. Learn about UID (Unique Identifier)
-/// 2. Learn about the 'key' ability
-/// 3. Create your first Sui object
-///
-/// Note: The code includes plotId support. You can copy code from 
-/// day_15/sources/solution.move if needed (note: plotId functionality has been added)
+/// Today (Done in main.move):
+/// 1. Learnt about UID (Unique Identifier)
+/// 2. Learnt about the 'key' ability
+/// 3. Created your first Sui object
+#[allow(unused_function)]
 
 module challenge::day_16 {
 
@@ -73,23 +71,28 @@ module challenge::day_16 {
         vector::remove(&mut counters.plots, found_index);
         counters.harvested = counters.harvested + 1;
     }
+    // A UID (Unique Identifier) is what makes a struct a Sui object. 
+    // Every Sui object must have: An id: UID field | The key ability
+    // The UID is created using object::new(ctx) where ctx is a transaction context.
 
     // TODO: Define a struct called 'Farm' with:
-    // - id: UID (this makes it a Sui object)
-    // - counters: FarmCounters
+    // - id: UID (this makes it a Sui object) // - counters: FarmCounters
     // Add 'key' ability (required for Sui objects)
-    // public struct Farm has key {
-    //     id: UID,
-    //     counters: FarmCounters,
-    // }
+    // Farm object - a Sui object that can be owned
+    public struct Farm has key {
+        id: UID,
+        counters: FarmCounters,
+    }
 
     // TODO: Write a constructor 'new_farm' that:
-    // - Takes ctx: &mut TxContext
-    // - Creates a UID using object::new(ctx)
+    // - Takes ctx: &mut TxContext // - Creates a UID using object::new(ctx)
     // - Returns a Farm with the UID and default counters
-    // fun new_farm(ctx: &mut TxContext): Farm {
-    //     // Your code here
-    //     // Hint: let id = object::new(ctx);
-    // }
+     // Create a new Farm object
+    fun new_farm(ctx: &mut TxContext): Farm {
+        Farm {
+            id: object::new(ctx),
+            counters: new_counters(),
+        }
+    }
 }
 
