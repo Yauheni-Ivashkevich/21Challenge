@@ -1,12 +1,10 @@
 /// DAY 17: Ownership of Objects & Simple Entry Function
 /// 
-/// Today you will:
-/// 1. Learn about object ownership
-/// 2. Write your first entry function
-/// 3. Transfer objects to users
-///
-/// Note: The code includes plotId support. You can copy code from 
-/// day_16/sources/solution.move if needed (note: plotId functionality has been added)
+/// Today (Done in main.move):
+/// 1. Learnt about object ownership
+/// 2. Wrote your first entry function
+/// 3. Transfered objects to users
+#[allow(unused_function)]
 
 module challenge::day_17 {
    
@@ -86,26 +84,29 @@ module challenge::day_17 {
         }
     }
 
+    // Entry functions are the "public API" of your module 
+    // they're what users call to interact with your code.
     // TODO: Write an entry function 'create_farm' that:
-    // - Takes ctx: &mut TxContext
-    // - Creates a Farm using new_farm
+    // - Takes ctx: &mut TxContext // - Creates a Farm using new_farm
     // - Make it shareable object using transfer::share_object(farm)
-    // entry fun create_farm(ctx: &mut TxContext) {
-    //     // Your code here
-    // }
+    // Entry function to create a farm and transfer to sender
+    entry fun create_farm(ctx: &mut TxContext) {
+        let farm = new_farm(ctx);
+        transfer::share_object(farm);
+    }
 
     // TODO: Write a function 'plant_on_farm' that:
-    // - Takes farm: &mut Farm, plotId: u8
-    // - Calls plant() on farm.counters with plotId
-    // fun plant_on_farm(farm: &mut Farm, plotId: u8) {
-    //     // Your code here
-    // }
+    // - Takes farm: &mut Farm, plotId: u8 // - Calls plant() on farm.counters with plotId
+    // Plant on a farm (internal function)
+    fun plant_on_farm(farm: &mut Farm, plotId: u8) {
+        plant(&mut farm.counters, plotId);
+    }
 
     // TODO: Write a function 'harvest_from_farm' that:
-    // - Takes farm: &mut Farm, plotId: u8
-    // - Calls harvest() on farm.counters with plotId
-    // fun harvest_from_farm(farm: &mut Farm, plotId: u8) {
-    //     // Your code here
-    // }
+    // - Takes farm: &mut Farm, plotId: u8 // - Calls harvest() on farm.counters with plotId
+    // Harvest from a farm (internal function)
+    fun harvest_from_farm(farm: &mut Farm, plotId: u8) {
+        harvest(&mut farm.counters, plotId);
+    }
 }
 
