@@ -4,9 +4,7 @@
 /// Students should complete main.move, not this file.
 
 module challenge::day_18_solution {
-    use sui::object::{Self, UID};
-    use sui::transfer;
-    use sui::tx_context::TxContext;
+    
 
     // Copy Farm and all functions from day_17
     const MAX_PLOTS: u64 = 20;

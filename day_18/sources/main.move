@@ -1,17 +1,13 @@
 /// DAY 18: Receiving Objects & Updating State
 /// 
-/// Today you will:
-/// 1. Write entry functions that receive objects
-/// 2. Update object state on-chain
+/// Today (Done in main.move):
+/// 1. Wrote entry functions that receive objects
+/// 2. Updated object state on-chain
 /// 3. Understand how objects are passed in transactions
-///
-/// Note: The code includes plotId support. You can copy code from 
-/// day_17/sources/solution.move if needed (note: plotId functionality has been added)
+
 
 module challenge::day_18 {
-    use sui::object::{Self, UID};
-    use sui::transfer;
-    use sui::tx_context::TxContext;
+    
 
     // Copy from day_17: All structs and functions
     const MAX_PLOTS: u64 = 20;
@@ -102,17 +98,17 @@ module challenge::day_18 {
     }
 
     // TODO: Write an entry function 'plant_on_farm_entry' that:
-    // - Takes farm: &mut Farm, plotId: u8
-    // - Calls plant_on_farm(farm, plotId)
-    // entry fun plant_on_farm_entry(farm: &mut Farm, plotId: u8) {
-    //     // Your code here
-    // }
+    // - Takes farm: &mut Farm, plotId: u8  // - Calls plant_on_farm(farm, plotId)
+    // Entry function to plant on a farm
+    entry fun plant_on_farm_entry(farm: &mut Farm, plotId: u8) {
+        plant_on_farm(farm, plotId);
+    } 
 
     // TODO: Write an entry function 'harvest_from_farm_entry' that:
-    // - Takes farm: &mut Farm, plotId: u8
-    // - Calls harvest_from_farm(farm, plotId)
-    // entry fun harvest_from_farm_entry(farm: &mut Farm, plotId: u8) {
-    //     // Your code here
-    // }
+    // - Takes farm: &mut Farm, plotId: u8  // - Calls harvest_from_farm(farm, plotId)
+    // Entry function to harvest from a farm
+    entry fun harvest_from_farm_entry(farm: &mut Farm, plotId: u8) {
+        harvest_from_farm(farm, plotId);
+    }
 }
 
