@@ -1,12 +1,10 @@
 /// DAY 19: Simple Query Functions (View-like)
 /// 
-/// Today you will:
+/// Today (Done in main.move):
 /// 1. Write read-only functions
 /// 2. Query object state
 /// 3. Write tests for query functions (optional)
-///
-/// Note: The code includes plotId support with all farm functions. 
-/// You can reference day_18/sources/solution.move for basic structure, 
+#[allow(unused_function)]
 
 
 module challenge::day_19 {
@@ -88,7 +86,7 @@ module challenge::day_19 {
 
     entry fun create_farm(ctx: &mut TxContext) {
         let farm = new_farm(ctx);
-        transfer::transfer(farm, sender(ctx));
+        transfer::transfer(farm, tx_context::sender(ctx));
     }
 
     fun plant_on_farm(farm: &mut Farm, plotId: u8) {
@@ -108,22 +106,17 @@ module challenge::day_19 {
     }
 
     // TODO: Write a function 'total_planted' that:
-    // - Takes farm: &Farm (read-only reference)
-    // - Returns u64 (the planted count)
-    // public fun total_planted(farm: &Farm): u64 {
-    //     // Your code here
-    // }
+    // - Takes farm: &Farm (read-only reference)  // - Returns u64 (the planted count)
+    // Get total planted count
+    fun total_planted(farm: &Farm): u64 {
+        farm.counters.planted
+    }
 
     // TODO: Write a function 'total_harvested' that:
-    // - Takes farm: &Farm
-    // - Returns u64 (the harvested count)
-    // public fun total_harvested(farm: &Farm): u64 {
-    //     // Your code here
-    // }
-
-    // TODO: (Optional) Write a test that:
-    // - Creates a farm
-    // - Plants once
-    // - Checks that total_planted returns 1
+    // - Takes farm: &Farm  // - Returns u64 (the harvested count)
+     // Get total harvested count
+    fun total_harvested(farm: &Farm): u64 {
+        farm.counters.harvested
+    }
 }
 
