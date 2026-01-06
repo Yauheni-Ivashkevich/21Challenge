@@ -1,15 +1,15 @@
 /// DAY 20: Events (Optional but Small)
 /// 
-/// Today you will:
-/// 1. Learn about events
-/// 2. Define an event struct
-/// 3. Emit events when actions happen
-///
-/// Note: You can copy code from day_19/sources/solution.move if needed
+/// Today (Done in main.move):
+/// 1. Learned about events
+/// 2. Defined an event struct
+/// 3. Defined events when actions happen
+#[allow(unused_function)]
+
 
 module challenge::day_20 {
     // TODO: Import the event module here
-    // Hint: use sui::event;
+    use sui::event;
 
     const MAX_PLOTS: u64 = 20;
     const E_PLOT_NOT_FOUND: u64 = 1;
@@ -108,18 +108,30 @@ module challenge::day_20 {
     }
 
     // TODO: Define an event struct called 'PlantEvent' that:
-    // - Has a field 'planted_after' of type u64
-    // - Has 'copy' and 'drop' abilities (required for events)
-    // - Is marked as 'public struct'
+    // - Has a field 'planted_after' of type u64  // - Has 'copy' and 'drop' abilities (required for events)
+    // - Is marked as 'public struct'  // Event emitted when a crop is planted
+    public struct PlantEvent has copy, drop {
+        planted_after: u64,
+    }
+
 
     // TODO: Create/update the entry function 'plant_on_farm_entry' that:
-    // - Takes farm: &mut Farm and plotId: u8 as parameters
-    // - Calls plant_on_farm(farm, plotId) to plant
+    // - Takes farm: &mut Farm and plotId: u8 as parameters  // - Calls plant_on_farm(farm, plotId) to plant
     // - Gets the total planted count using total_planted(farm)
     // - Emits a PlantEvent using event::emit() with the planted_after value
+    // Entry function to plant with event emission
+    entry fun plant_on_farm_entry(farm: &mut Farm, plotId: u8) {
+        plant_on_farm(farm, plotId);
+        let planted_count = total_planted(farm);
+        event::emit(PlantEvent {
+            planted_after: planted_count,
+        });
+    }
 
     // TODO: Create the entry function 'harvest_from_farm_entry' that:
-    // - Takes farm: &mut Farm and plotId: u8 as parameters
-    // - Calls harvest_from_farm(farm, plotId) to harvest
+    // - Takes farm: &mut Farm and plotId: u8 as parameters  // - Calls harvest_from_farm(farm, plotId) to harvest
+    entry fun harvest_from_farm_entry(farm: &mut Farm, plotId: u8) {
+        harvest_from_farm(farm, plotId);
+    }
 }
 

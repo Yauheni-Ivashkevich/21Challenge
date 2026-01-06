@@ -2,6 +2,8 @@
 /// 
 /// This is the solution file for day 20.
 /// Students should complete main.move, not this file.
+#[allow(unused_function)]
+
 
 module challenge::day_20_solution {
   
